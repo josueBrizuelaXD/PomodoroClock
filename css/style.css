@@ -1,10 +1,115 @@
 body {
-	background: black;
+	background: #343333;
+	font-family: 'Indie Flower', cursive;
+	color: white;
 }
 
 
 canvas {
-	height: 100%;
-	width: 100%;
-	border: solid 1px white;
+	height: 632px;
+	width: 704px;
+	position: relative;
+	left: -4%;
+/*	border: solid 1px white;*/
+/*
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%,0);
+*/
+}
+
+h1 {
+	font-size: 90px;
+	margin: 0;
+	text-align: center;
+	color: #40ADF7;
+
+	
+}
+
+label {
+	font-size: 40px;
+	color: #40ADF7;
+}
+
+p {
+	display: inline;
+}
+
+
+.container {
+	width: 50%;
+	margin: -40px auto 80px auto;
+	
+}
+
+.sub-section {
+	
+	margin: 0px 15px;
+	font-size: 20px;
+	text-align: center;
+}
+
+.sub-section > button {
+	background: none;
+	color: #49F848;
+	font-size: 30px;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+
+button.minus {
+	color: #F73C67;
+}
+
+
+.setup-section > div {
+	display: inline-block;
+	margin: 10px 20px;
+	position: relative;
+	left: 9%;
+}
+
+.time-section > div {
+	display: inline-block;
+	margin: 10px 20px;
+	position: relative;
+	left:-5%;
+}
+
+.time-session-section {
+	font-size: 50px;
+	text-align: center;
+	position: relative;
+	left: 25%;
+	color: #F73C67;
+}
+
+.time-break-section {
+	font-size: 50px;
+	text-align: center;
+	position: relative;
+	left: 25%;
+	color: #49F848;
+}
+
+
+.start-btn {
+	background: #49F848;
+	border: none;
+	border-radius: 16px;
+	font-size: 50px;
+	padding: 20px;
+	position: relative;
+	left: 30%;
+	margin: 30px;
+}
+
+#myImage {
+	display: none;
+	width: 722px;
+	height: 649px;
 }

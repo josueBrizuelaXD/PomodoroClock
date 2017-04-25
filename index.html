@@ -4,14 +4,66 @@
 
 	<head>
 		<link href="css/style.css" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
 
 
 	</head>	
 
 	<body>
-		<canvas id="myCanvas" resize="true"></canvas>
-
+		<h1>Pomodoro Clock</h1>
+		
+		<div class="container">
+			
+		<div><canvas id="myCanvas" resize="true"></canvas></div>		
+			
+		<div class="setup-section">
+		
+		<div>
+		<div><label>Break Length</label></div>
+				
+		<div class="sub-section">
+		<button class="minus">-</button>
+		<p>Break</p>
+	    <button>+</button>
+		</div>
+			
+			
+				
+		</div>
+		
+		
+		<div>
+		<div><label>Session Length</label></div>
+				
+		<div class="sub-section">
+		<button class="minus">-</button>
+		<p>Session</p>
+	    <button>+</button>
+		</div>	
+				
+		
+		</div>	
+			
+		</div>
+			
+		<div class="time-section">
+		<div>
+		<label class="time-session-section">Session: <span>25:00</span> </label>	
+		</div>
+		<div>
+		<label class="time-break-section">Break: <span>25:00</span> </label>	
+		</div>	
+			
+	    </div>	
+				
+		<div>
+		<button class="start-btn">Start!</button>	
+		</div>
+		
+		</div>
+		
+		
+		<img id="myImage" src="img/liquid-mask.png">
 	</body>
 
 	<footer>
@@ -31,70 +83,70 @@
 				var viewCenterX = view.center.x;
 				var viewCenterY = view.center.y;
 				
-				var liquidPathData = "M22.212,106.298c3.9,6.82 226.633,6.481 230.534,-0.339c49.534,-86.627 -15.769,-101.963 -41.37,-101.878c-19.933,0.065 -46.706,-0.156 -73.628,0c-27.261,0.158 -50.441,-0.337 -71.876,0c-31.035,0.487 -93.195,15.59 -43.66,102.217Z";
+				var liquidPathData = "M22.212,106.638c3.9,6.821 226.633,6.482 230.534,-0.339c49.534,-86.627 -15.769,-101.962 -41.37,-101.878c-11.467,0.038 -25.199,-0.019 -39.921,-0.045c-10.867,-0.019 -22.274,-0.021 -33.707,0.045c-13.484,0.078 -25.97,-0.003 -37.74,-0.065c-12.025,-0.063 -23.303,-0.105 -34.136,0.065c-31.035,0.488 -93.195,15.59 -43.66,102.217Z";
 
-				var glassPathData = 'M267.969,374.773c-4.232,9.266 -245.955,8.805 -250.187,-0.461c-53.758,-117.685 65.519,-142.042 69.075,-142.019c21.569,0.134 13.379,-145.955 10.3,-183.931c-1.41,-17.379 -48.072,-43.926 -28.778,-43.926c12.201,0 48.59,0 74.205,0c0.264,0 62.587,0.461 74.787,0.461c19.295,0 -27.367,26.547 -28.777,43.925c-3.079,37.976 -11.269,184.066 10.3,183.931c3.556,-0.022 122.833,24.335 69.075,142.02Z';
+				
 
 				var liquidPath = new Path(liquidPathData);
 				liquidPath.fillColor = "#38ABFA";
+				liquidPath.strokeColor ="white";
+				liquidPath.strokeWidth = 2;
 				
-				var glassPath = new Path(glassPathData);
-				glassPath.strokeColor ="#cffcfe";
-				glassPath.strokeWidth = 20;
+//				var circle = Path.Circle(new Point(viewCenterX - 15, 100), 50);
+//				circle.fillColor = "#38ABFA";
 				
-				var circle = Path.Circle(new Point(viewCenterX - 15, 100), 50);
-				circle.fillColor = "#38ABFA";
+				var waveHeight = viewCenterY + 140;
 				
-                animatePaper.animate(circle, {
-				properties: {
-				position: {
-					x: viewCenterX - 15,
-					y: 800
-				}					 
-			},
-				settings: {
-					duration: 1000,
-					easing: "easeOut",
-					repeat: activeAnim,
-					complete: function(item, animation) {
-						console.log("ani completed: " + Object.keys(item));
-						
-						animatePaper.animate(this, {
-						properties: {
-							position: {
-								y: 760
-							}
-						},
-						
-						settings: {
-							duration:1000,
-							easing: "easeOut"
-						}
-						})
-					}
-				}
-									 
-				});
+				var imRaster = new Raster("myImage");
+				imRaster.position = new Point(352,316);
 				
+				liquidPath.bounds = new Rectangle(viewCenterX - ((viewWidth * 0.53) / 2),waveHeight,viewWidth * 0.56,viewHeight * 0.3);
 				
-
-				liquidPath.bounds = new Rectangle(view.center.x - ((view.bounds.width * 0.33) / 2), view.bounds.height - ((view.bounds.width * 0.31) / 2),view.bounds.width * 0.33,view.bounds.height * 0.3);
-
-				glassPath.bounds = new Rectangle(view.center.x - ((view.bounds.width * 0.32) / 2), 0, view.bounds.width * 0.32, view.bounds.height);
-				var height = 15;
-				var waveHeight = view.bounds.height - (view.bounds.height * 0.20);
+//                animatePaper.animate(circle, {
+//				properties: {
+//				position: {
+//					x: viewCenterX - 15,
+//					y: 800
+//				}					 
+//			},
+//				settings: {
+//					duration: 1000,
+//					easing: "easeOut",
+//					repeat: activeAnim,
+//					complete: function(item, animation) {
+//						console.log("ani completed: " + Object.keys(item));
+//						
+//						animatePaper.animate(this, {
+//						properties: {
+//							position: {
+//								y: 760
+//							}
+//						},
+//						
+//						settings: {
+//							duration:1000,
+//							easing: "easeOut"
+//						}
+//						})
+//					}
+//				}
+//									 
+//				});
 				
 				
 
-
-				view.onResize = function(event) {
-
-					liquidPath.bounds = new Rectangle(view.center.x - ((view.bounds.width * 0.31) / 2), view.bounds.height - ((view.bounds.width * 0.31) / 2),view.bounds.width * 0.31,view.bounds.height * 0.3);
-
-					glassPath.bounds = new Rectangle(view.center.x - ((view.bounds.width * 0.32) / 2), 0, view.bounds.width * 0.32, view.bounds.height);
-
-					viewHeight = view.bounds.height - (view.bounds.height * 0.33);
-				}
+			
+var fillPercentage = 0;
+			
+			setInterval(function() {
+			fillPercentage += 1;
+				
+			if (fillPercentage >= 270) {
+				fillPercentage = 270;
+			}
+				
+			}, 100);	
+				
 
 
 		view.onFrame = function(event) { 
@@ -102,11 +154,11 @@
 
 			if (activeAnim) {
 //				liquidPath.fillColor.hue -= 1;
-				for (var i = 2; i < 5; i++) {
+				for (var i = 2; i < 7; i++) {
 					var segment = liquidPath.segments[i];
 
-					var sinus = Math.sin(event.time * 3 + i);
-					var yPoint = sinus * height + waveHeight;
+					var sinus = Math.sin(event.time * 7 + i);
+					var yPoint = sinus * 4 + waveHeight - fillPercentage ;
 					segment.point.y = yPoint;
 
 				}
