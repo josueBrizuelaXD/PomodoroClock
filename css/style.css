@@ -8,24 +8,17 @@ body {
 canvas {
 	height: 632px;
 	width: 704px;
-	position: relative;
-	left: -4%;
 /*	border: solid 1px white;*/
-/*
-	position: absolute;
-	top: 30%;
-	left: 50%;
-	transform: translate(-50%,0);
-*/
+    position: relative;
+	top: -170px;
+	z-index: -50;
 }
 
 h1 {
 	font-size: 90px;
-	margin: 0;
 	text-align: center;
-	color: #40ADF7;
-
-	
+	color: #40ADF7;	
+	margin: 0px;
 }
 
 label {
@@ -39,14 +32,19 @@ p {
 
 
 .container {
-	width: 50%;
-	margin: -40px auto 80px auto;
+	
+	width: 704px;
+	margin: 70px auto 0px auto;
 	
 }
 
+.sub-container {
+	position: relative;
+	top: -290px;
+}
+
 .sub-section {
-	
-	margin: 0px 15px;
+	margin: -25px 15px;
 	font-size: 20px;
 	text-align: center;
 }
@@ -68,16 +66,15 @@ button.minus {
 
 .setup-section > div {
 	display: inline-block;
-	margin: 10px 20px;
+	margin: 0px 20px;
 	position: relative;
-	left: 9%;
+	left: 14%;
 }
 
 .time-section > div {
 	display: inline-block;
 	margin: 10px 20px;
-	position: relative;
-	left:-5%;
+	
 }
 
 .time-session-section {
@@ -102,14 +99,12 @@ button.minus {
 	border: none;
 	border-radius: 16px;
 	font-size: 50px;
-	padding: 20px;
+	padding: 20px 30px;
 	position: relative;
-	left: 30%;
-	margin: 30px;
+	left: 40%;
+	cursor: pointer;
 }
 
 #myImage {
 	display: none;
-	width: 722px;
-	height: 649px;
 }
