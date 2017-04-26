@@ -65,34 +65,12 @@ button.minus {
 
 
 .setup-section > div {
-	display: inline-block;
-	margin: 0px 20px;
-	position: relative;
-	left: 14%;
-}
-
-.time-section > div {
-	display: inline-block;
-	margin: 10px 20px;
-	
-}
-
-.time-session-section {
-	font-size: 50px;
 	text-align: center;
+	display: inline-block;
+	margin: 20px 10px;
 	position: relative;
-	left: 25%;
-	color: #F73C67;
+	left: 12%;
 }
-
-.time-break-section {
-	font-size: 50px;
-	text-align: center;
-	position: relative;
-	left: 25%;
-	color: #49F848;
-}
-
 
 .start-btn {
 	background: #49F848;
@@ -103,8 +81,22 @@ button.minus {
 	position: relative;
 	left: 40%;
 	cursor: pointer;
+	transition: 0.3s;
 }
 
 #myImage {
 	display: none;
+}
+
+#sessionLbl {
+	font-size: 60px;
+	text-align: center;
+	color: #F73C67;
+	
+}
+
+#breakLbl {
+	font-size: 60px;
+	text-align: center;
+	color: #49F848;
 }

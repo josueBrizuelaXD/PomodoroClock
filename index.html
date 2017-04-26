@@ -23,12 +23,15 @@
 		<div><label>Break Length</label></div>
 				
 		<div class="sub-section">
-		<button class="minus">-</button>
+		<button class="minus" onclick="decreaseBreak()">-</button>
 		<p>Break</p>
-	    <button>+</button>
+	    <button onclick="increaseBreak()">+</button>
 		</div>
 			
-			
+		<br>		
+		<div>
+		<label id="breakLbl">Break: <span id="break-span">1:00</span> </label>	
+		</div>		
 				
 		</div>
 		
@@ -37,28 +40,21 @@
 		<div><label>Session Length</label></div>
 				
 		<div class="sub-section">
-		<button class="minus">-</button>
+		<button class="minus" onclick="decreaseSession()">-</button>
 		<p>Session</p>
-	    <button>+</button>
+	    <button onclick="increaseSession()">+</button>
 		</div>	
-				
 		
+		<br>	
+		<div>
+		<label id="sessionLbl">Session: <span id="session-span">1:00</span> </label>	
+		</div>	
 		</div>	
 			
-		</div>
-			
-		<div class="time-section">
-		<div>
-		<label class="time-session-section">Session: <span>25:00</span> </label>	
-		</div>
-		<div>
-		<label class="time-break-section">Break: <span>5:00</span> </label>	
-		</div>	
-			
-	    </div>	
+			</div>	
 				
 		<div>
-		<button class="start-btn">Start!</button>	
+		<button class="start-btn" onclick="startBtnPressed(this)">Start!</button>	
 		</div>
 		
 		</div>		
@@ -74,6 +70,18 @@
 
 
 		<script type="text/javascript">
+			var sessionSpan = document.getElementById("session-span");
+			var breakSpan = document.getElementById("break-span");
+			var sessionMinTime = 1;
+			var breakMinTime = 1;
+			var hasStarted = false;
+			var isBreakTime = false;
+			var sec = 60;
+			var initialSessionMin = sessionMinTime - 1;
+		    var initialBreakMin = breakMinTime - 1;
+		    var secStr = sec.toString;
+		 	var clockInterval = 0;
+			
 			paper.install(window);
 
 
@@ -94,49 +102,14 @@
 				liquidPath.strokeColor ="white";
 				liquidPath.strokeWidth = 2;
 				
-//				var circle = Path.Circle(new Point(viewCenterX - 15, 100), 50);
-//				circle.fillColor = "#38ABFA";
-				
 				var waveHeight = viewCenterY + 140;
 				
 				var imRaster = new Raster("myImage");
 				imRaster.position = new Point(352,316);
 				
 				liquidPath.bounds = new Rectangle(viewCenterX - ((viewWidth * 0.53) / 2),waveHeight,viewWidth * 0.56,viewHeight * 0.3);
+				            
 				
-//                animatePaper.animate(circle, {
-//				properties: {
-//				position: {
-//					x: viewCenterX - 15,
-//					y: 800
-//				}					 
-//			},
-//				settings: {
-//					duration: 1000,
-//					easing: "easeOut",
-//					repeat: activeAnim,
-//					complete: function(item, animation) {
-//						console.log("ani completed: " + Object.keys(item));
-//						
-//						animatePaper.animate(this, {
-//						properties: {
-//							position: {
-//								y: 760
-//							}
-//						},
-//						
-//						settings: {
-//							duration:1000,
-//							easing: "easeOut"
-//						}
-//						})
-//					}
-//				}
-//									 
-//				});
-				
-				
-
 			
 var fillPercentage = 0;
 			
@@ -170,13 +143,181 @@ var fillPercentage = 0;
 
 		} 
 		view.draw();
-
-
-
 				
 }
 
 
+	function startBtnPressed(ob) {
+	 
+		
+		if (hasStarted) {
+		
+			hasStarted = false;
+			clearInterval(clockInterval);
+			ob.style.background = "#49F848";
+			ob.style.color = "black";
+			ob.innerHTML = "Start!";
+		} else {
+			
+			hasStarted = true;
+			ob.style.background = "#F73C67";
+			ob.style.color = "white";
+			ob.innerHTML = "Stop!";
+			
+			
+			//start the time
+		clockInterval = setInterval(function() {
+			//if seconds are less or equal than zero, reset secs.
+			
+		if (sec <= 0) {
+			sec = 60;
+		}	
+		//otherwise keep substracting 1.
+		sec -= 1;
+			
+		if (sec.toString().length < 2) {
+			secStr = "0" + sec;
+		} else {
+			secStr = sec.toString();
+		}
+			
+		if (isBreakTime) {
+			breakSpan.innerHTML = initialBreakMin + ":" + secStr;	
+		} else {
+			sessionSpan.innerHTML = initialSessionMin + ":" + secStr;		
+		}	
+		
+		
+			
+		if (sec === 0 && !isBreakTime) {
+			
+			
+			console.log("min: " + initialSessionMin);
+			
+			initialSessionMin--;
+			
+		} else if(sec === 0 && isBreakTime) {
+			initialBreakMin--;
+			
+			console.log("minbreak: " + initialBreakMin);	
+		}
+			
+			
+			
+			
+		if(initialSessionMin < 0) {
+			console.log("first called");
+			initialSessionMin = sessionMinTime - 1;
+			sessionSpan.innerHTML = "0" + ":" + "00";
+			isBreakTime = true;
+			
+			setTimeout(function() {
+			sessionSpan.innerHTML = sessionMinTime + ":" + "00";	
+			}, 1000);
+			
+		} else if(initialBreakMin < 0) {
+			console.log("break first called");
+			initialBreakMin = breakMinTime - 1;
+			
+			breakSpan.innerHTML = "0" + ":" + "00";
+			isBreakTime = false;
+			
+			setTimeout(function() {
+			breakSpan.innerHTML = breakMinTime + ":" + "00";	
+			}, 1000);
+			
+			
+		} 	
+			
+	
+		},1000)
+			
+			
+		}
+		
+		
+	
+		
+		
+		
+		
+	}
+			
+			
+			
+	function increaseSession() {
+	if (hasStarted) {
+		return;
+	}
+		sessionMinTime++;
+		sec = 60;
+		initialSessionMin = sessionMinTime - 1;
+		initialBreakMin = breakMinTime - 1;
+		secStr = sec.toString;
+		isBreakTime = false;
+		console.log("session: " + sessionMinTime);
+		breakSpan.innerHTML = breakMinTime + ":" + "00";
+		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+	}	
+		
+		
+	
+			
+	function decreaseSession() {
+		if (hasStarted) {
+		return;	
+		}
+		if (sessionMinTime > 1) {
+			sessionMinTime--;
+		}
+		sec = 60;
+		initialSessionMin = sessionMinTime - 1;
+		initialBreakMin = breakMinTime - 1;
+		secStr = sec.toString;
+		isBreakTime = false;
+		console.log("session: " + sessionMinTime);
+		breakSpan.innerHTML = breakMinTime + ":" + "00";
+		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+			
+			
+		}
+		
+	function decreaseBreak() {
+		if (hasStarted) {
+			return;
+		}
+		
+		if(breakMinTime > 1) {
+			breakMinTime--;
+		}
+		
+		sec = 60;
+		initialSessionMin = sessionMinTime - 1;
+		initialBreakMin = breakMinTime - 1;
+		secStr = sec.toString;
+		isBreakTime = false;
+		console.log("session: " + sessionMinTime);
+		breakSpan.innerHTML = breakMinTime + ":" + "00";
+		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+			
+		
+	}
+			
+	function increaseBreak() {
+		if (hasStarted) {
+			return;
+		}
+		breakMinTime++;
+		sec = 60;
+		initialSessionMin = sessionMinTime - 1;
+		initialBreakMin = breakMinTime - 1;
+		secStr = sec.toString;
+		isBreakTime = false;
+		console.log("session: " + sessionMinTime);
+		breakSpan.innerHTML = breakMinTime + ":" + "00";
+		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+	}		
+			
 
 		</script>
 	</footer>	
