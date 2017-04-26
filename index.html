@@ -13,7 +13,8 @@
 		
 		
 		<div class="container">
-		<h1>Pomodoro Clock</h1>	
+		<h1>Pomodoro
+		<span style="color:#49F848">Clock</span></h1>	
 		<div><canvas id="myCanvas" resize="true"></canvas></div>		
 		
 		<div class="sub-container">
@@ -81,28 +82,30 @@
 		    var initialBreakMin = breakMinTime - 1;
 		    var secStr = sec.toString;
 		 	var clockInterval = 0;
+			var activeAnim = false;
+			var fillPercentage = 0;
+			var animationTimer = 0;
+			var animSpeed = (sessionMinTime * 60 * 1000) / 300;
+			var liquidPathData = "M22.212,106.638c3.9,6.821 226.633,6.482 230.534,-0.339c49.534,-86.627 -15.769,-101.962 -41.37,-101.878c-11.467,0.038 -25.199,-0.019 -39.921,-0.045c-10.867,-0.019 -22.274,-0.021 -33.707,0.045c-13.484,0.078 -25.97,-0.003 -37.74,-0.065c-12.025,-0.063 -23.303,-0.105 -34.136,0.065c-31.035,0.488 -93.195,15.59 -43.66,102.217Z";
+			var liquidPath;
 			
 			paper.install(window);
 
 
 			window.onload = function() {
 				paper.setup('myCanvas');
-               	var activeAnim = true;
-				var viewHeight = view.bounds.height;
-				var viewWidth = view.bounds.width;
-				var viewCenterX = view.center.x;
-				var viewCenterY = view.center.y;
 				
-				var liquidPathData = "M22.212,106.638c3.9,6.821 226.633,6.482 230.534,-0.339c49.534,-86.627 -15.769,-101.962 -41.37,-101.878c-11.467,0.038 -25.199,-0.019 -39.921,-0.045c-10.867,-0.019 -22.274,-0.021 -33.707,0.045c-13.484,0.078 -25.97,-0.003 -37.74,-0.065c-12.025,-0.063 -23.303,-0.105 -34.136,0.065c-31.035,0.488 -93.195,15.59 -43.66,102.217Z";
-
+           	var viewHeight = view.bounds.height;
+			var viewWidth = view.bounds.width;
+			var viewCenterX = view.center.x;
+			var viewCenterY = view.center.y;
 				
-
-				var liquidPath = new Path(liquidPathData);
-				liquidPath.fillColor = "#38ABFA";
+				liquidPath = new Path(liquidPathData);
+				liquidPath.fillColor = "#F73C67";
 				liquidPath.strokeColor ="white";
 				liquidPath.strokeWidth = 2;
 				
-				var waveHeight = viewCenterY + 140;
+				var waveHeight = viewCenterY + 170;
 				
 				var imRaster = new Raster("myImage");
 				imRaster.position = new Point(352,316);
@@ -111,24 +114,18 @@
 				            
 				
 			
-var fillPercentage = 0;
+
 			
-			setInterval(function() {
-			fillPercentage += 1;
-				
-			if (fillPercentage >= 270) {
-				fillPercentage = 270;
-			}
-				
-			}, 100);	
-				
+			
 
 
 		view.onFrame = function(event) { 
 			
 
-			if (activeAnim) {
-//				liquidPath.fillColor.hue -= 1;
+			
+if (activeAnim) {
+				
+				
 				for (var i = 2; i < 7; i++) {
 					var segment = liquidPath.segments[i];
 
@@ -137,7 +134,7 @@ var fillPercentage = 0;
 					segment.point.y = yPoint;
 
 				}
-			}
+}
 
 
 
@@ -153,7 +150,9 @@ var fillPercentage = 0;
 		if (hasStarted) {
 		
 			hasStarted = false;
+			activeAnim = false;
 			clearInterval(clockInterval);
+			clearInterval(animationTimer);
 			ob.style.background = "#49F848";
 			ob.style.color = "black";
 			ob.innerHTML = "Start!";
@@ -207,39 +206,85 @@ var fillPercentage = 0;
 			
 		if(initialSessionMin < 0) {
 			console.log("first called");
-			initialSessionMin = sessionMinTime - 1;
-			sessionSpan.innerHTML = "0" + ":" + "00";
-			isBreakTime = true;
+			
 			
 			setTimeout(function() {
 			sessionSpan.innerHTML = sessionMinTime + ":" + "00";	
 			}, 1000);
 			
+			initialSessionMin = sessionMinTime - 1;
+			sessionSpan.innerHTML = "0" + ":" + "00";
+			clearInterval(animationTimer);
+			animSpeed = (breakMinTime * 60 * 1000) / 300;
+			isBreakTime = true;
+			
+			setTimeout(function() {
+				fillPercentage = 0;
+				liquidPath.fillColor = "#49F848";
+				
+				if (activeAnim) {
+					animationTimer = setInterval(function() {
+			fillPercentage += 1;
+				
+			if (fillPercentage >= 300) {
+				fillPercentage = 300;
+			}
+				
+			}, animSpeed);
+				}
+				
+			}, 1000);
+			
+			/// When break time reaches zero
 		} else if(initialBreakMin < 0) {
 			console.log("break first called");
-			initialBreakMin = breakMinTime - 1;
 			
-			breakSpan.innerHTML = "0" + ":" + "00";
-			isBreakTime = false;
 			
 			setTimeout(function() {
 			breakSpan.innerHTML = breakMinTime + ":" + "00";	
 			}, 1000);
 			
+			initialBreakMin = breakMinTime - 1;
+			breakSpan.innerHTML = "0" + ":" + "00";
+			isBreakTime = false;
+			clearInterval(animationTimer);
+			animSpeed = (sessionMinTime * 60 * 1000) / 300;
 			
+			setTimeout(function() {
+				fillPercentage = 0;
+				liquidPath.fillColor = "#F73C67";
+				
+						if (activeAnim) {
+					animationTimer = setInterval(function() {
+			fillPercentage += 1;
+				
+			if (fillPercentage >= 300) {
+				fillPercentage = 300;
+			}
+				
+			}, animSpeed);
+				}
+				
+				
+			}, 1000);
 		} 	
 			
 	
 		},1000)
 			
+		activeAnim = true;	
+		animationTimer = setInterval(function() {
+			fillPercentage += 1;
+				
+			if (fillPercentage >= 300) {
+				fillPercentage = 300;
+			}
+				
+			}, animSpeed);	
+					
+			
 			
 		}
-		
-		
-	
-		
-		
-		
 		
 	}
 			
@@ -258,6 +303,8 @@ var fillPercentage = 0;
 		console.log("session: " + sessionMinTime);
 		breakSpan.innerHTML = breakMinTime + ":" + "00";
 		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+		fillPercentage = 0;
+		animSpeed = (sessionMinTime * 60 * 1000) / 300;
 	}	
 		
 		
@@ -278,7 +325,8 @@ var fillPercentage = 0;
 		console.log("session: " + sessionMinTime);
 		breakSpan.innerHTML = breakMinTime + ":" + "00";
 		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
-			
+		fillPercentage = 0;	
+		animSpeed = (sessionMinTime * 60 * 1000) / 300;
 			
 		}
 		
@@ -299,8 +347,8 @@ var fillPercentage = 0;
 		console.log("session: " + sessionMinTime);
 		breakSpan.innerHTML = breakMinTime + ":" + "00";
 		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
-			
-		
+		fillPercentage = 0;	
+		animSpeed = (sessionMinTime * 60 * 1000) / 300;
 	}
 			
 	function increaseBreak() {
@@ -316,6 +364,8 @@ var fillPercentage = 0;
 		console.log("session: " + sessionMinTime);
 		breakSpan.innerHTML = breakMinTime + ":" + "00";
 		sessionSpan.innerHTML = sessionMinTime + ":" + "00";
+		fillPercentage = 0;
+		animSpeed = (sessionMinTime * 60 * 1000) / 300;
 	}		
 			
 
